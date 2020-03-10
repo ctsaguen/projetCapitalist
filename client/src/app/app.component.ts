@@ -24,18 +24,20 @@ export class AppComponent {
       this.createUsername();
     }
   
-  onProductionDone( p ) {
+  onProductionDone(  p : Product ) {
       this.world.money = this.world.money + p.revenu;
       this.world.score = this.world.score + 1;
     }
     onUsernameChanged():void{
-      this.username = localStorage.getItem("username");
+      localStorage.setItem("username",this.username);
       this.service.setUser(this.username);
-      this.createUsername();
     }
     createUsername():void{
+      this.username = localStorage.getItem("username");
       if(this.username==''){
         this.username = 'Captain' + Math.floor(Math.random() * 10000);
+        localStorage.setItem("username",this.username);
       }
+      this.service.setUser(this.username);
     }
 }

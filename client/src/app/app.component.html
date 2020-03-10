@@ -5,11 +5,11 @@
       <!--<img [attr.src]="server+world.logo" />-->
       <!--<span id="worldname"> {{world.name}} </span>-->
       <span style="margin-left: 10px; color: aliceblue;" class="txt text-uppercase font-weight-bold text-monospace"
-        id="worldname"> PARIS
+        id="worldname"> {{world.name}}
       </span>
     </div>
     <!--<div class="col-md-4"><span [innerHTML]="world.money | bigvalue"> </span></div>-->
-    <div class="col-md-4 text-center txt" style="padding-top: 25px;"><span> $ 3.OO </span></div>
+    <div class="col-md-4 text-center txt" style="padding-top: 25px;"><span [innerHTML]="world.money | bigvalue"></span></div>
     <div class="col-md-4">
       <div class="txt row">
         <div class="col-md-5">
@@ -35,7 +35,7 @@
     </div>
     <div class="col-md-10">
       <div style="margin-right: 80px; margin-left: 20px;" class="row">
-        <app-products (notifyProduction)="onProductionDone($event)" [money]="world.money" [qtmulti]="qtmulti"
+        <app-products  (notifyProduction)="onProductionDone($event)" [money]="world.money" [qtmulti]="qtmulti"
           [prod]="world.products.product[0]" class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
         <app-products (notifyProduction)="onProductionDone($event)" [money]="world.money" [qtmulti]="qtmulti"
           [prod]="world.products.product[1]" class="product col-md-5 offset-md-2 shadow p-3 mb-5 bg-dark rounded">

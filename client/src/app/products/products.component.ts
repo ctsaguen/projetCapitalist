@@ -47,8 +47,7 @@ export class ProductsComponent implements OnInit {
         from: { color: '#FFEA82' },
         to: { color: '#ED6A5A' }
       });
-
-    setInterval(() => { this.calcScore(); }, 100);
+   // setInterval(() => { this.calcScore(); }, 100);
   }
 
   production() {

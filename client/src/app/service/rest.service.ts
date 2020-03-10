@@ -34,7 +34,7 @@ export class RestService {
    }
 
    getWorld(): Promise<World> {
-    return this.http.get(this.server + "webresources/generic/world", {
+    return this.http.get(this.server + "generic/world", {
       headers: this.setHeaders(this.user)})
     .toPromise().then(response => response)
     .catch(this.handleError);
