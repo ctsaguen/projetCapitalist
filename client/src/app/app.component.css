@@ -1,0 +1,15 @@
+.button{
+  line-height: 100px;
+}
+
+.product{
+  color: aliceblue;
+}
+.notif{
+ height: 120px;
+ padding-top: 10px;
+}
+.notif:hover{
+  background-color:rgba(0,0, 0, 0.6);
+  color: aliceblue;
+}
