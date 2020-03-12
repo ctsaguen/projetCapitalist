@@ -1,9 +1,9 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { Product } from '../model/product.model';
 
 declare var require;
-const ProgressBar = require("progressbar.js");
+var ProgressBar = require('progressbar.js');
 
 @Component({
   selector: 'app-products',
@@ -12,9 +12,9 @@ const ProgressBar = require("progressbar.js");
 })
 export class ProductsComponent implements OnInit {
   progressbar: any;
-  @ViewChild('bar') progressBarItem;
   product: Product;
   lastupdate: number;
+  maxAchat: number;
   @Input()
   set prod(value: Product) {
     this.product = value;
@@ -26,9 +26,9 @@ export class ProductsComponent implements OnInit {
     this._money = value;
   }
 
-  _qtmulti: string;
+  _qtmulti: number;
   @Input()
-  set qtmulti(value: string) {
+  set qtmulti(value: number) {
     this._qtmulti = value;
     if (this._qtmulti && this.product) this.calcMaxCanBuy();
   }
@@ -38,24 +38,25 @@ export class ProductsComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.progressbar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
-        strokeWidth: 100,
-        color: '#00ff00',
-        trailColor: '#eee',
-        trailWidth: 1,
-        svgStyle: { width: '100%', height: '100%' },
-        from: { color: '#FFEA82' },
-        to: { color: '#ED6A5A' }
-      });
-   // setInterval(() => { this.calcScore(); }, 100);
+    this.progressbar = new ProgressBar.Line("#bar", {
+      strokeWidth: 4,
+      easing: 'easeInOut',
+      duration: 1400,
+      color: '#FFEA82',
+      trailColor: '#eee',
+      trailWidth: 1,
+      svgStyle: {width: '100%', height: '100%'}
+    });
+   //setInterval(() => { this.calcScore(); }, 100);
   }
 
   production() {
-    if (this.product.quantite > 1) {
+   // if (this.product.quantite >= 1) {
       this.product.timeleft = this.product.vitesse;
       this.lastupdate = Date.now();
-      this.progressbar.animate(1, { duration: this.product.vitesse });
-    }
+      this.progressbar.animate(1.0);
+     // this.progressbar.animate(1, { duration: this.product.vitesse });
+  //  }
   }
 
   calcScore() {
@@ -63,14 +64,18 @@ export class ProductsComponent implements OnInit {
       this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
       if (this.product.timeleft <= 0) {
         this.product.timeleft = 0;
-        this.progressbar.set(0);
+       // this.progressbar.set(0);
         this.notifyProduction.emit(this.product);
       }
     }
   }
 
   calcMaxCanBuy() {
-
+    if(this._qtmulti==1000){
+      var x = (1/Math.log(this.product.croissance))*(1 - (this._money * (1 - this.product.croissance))/this.product.cout);
+      this.maxAchat = Math.floor(x); 
+      console.log(this.maxAchat);
+    }
   }
 
 }

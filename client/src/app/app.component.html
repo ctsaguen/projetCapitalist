@@ -13,9 +13,13 @@
     <div class="col-md-4">
       <div class="txt row">
         <div class="col-md-5">
-          <button style="height: 100px; width: 155px; font-size: 20px;" class="btn btn-info">
+          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti!=1000" class="btn btn-info" (click)="commutateur()">
             <span>Buy</span><br />
-            <span>x1</span>
+            <span>x{{qtmulti}}</span>
+          </button>
+          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti==1000" class="btn btn-info" (click)="commutateur()">
+            <span>Buy</span><br />
+            <span>Max</span>
           </button>
         </div>
         <div class="col-md-7" style="margin-top: 11px;">
@@ -42,9 +46,6 @@
         </app-products>
         <app-products (notifyProduction)="onProductionDone($event)" [money]="world.money" [qtmulti]="qtmulti"
           [prod]="world.products.product[2]" class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
-        <app-products (notifyProduction)="onProductionDone($event)" [money]="world.money" [qtmulti]="qtmulti"
-          [prod]="world.products.product[3]" class="product col-md-5 offset-md-2 shadow p-3 mb-5 bg-dark rounded">
-        </app-products>
       </div>
     </div>
   </div>
@@ -87,5 +88,4 @@
       <button type="button" class="btn btn-danger" (click)="managersModal.hide()">Close</button>
     </div>
   </app-modal>
-  <toaster-container></toaster-container>
 </div>

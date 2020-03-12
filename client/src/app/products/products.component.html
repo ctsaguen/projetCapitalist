@@ -4,16 +4,16 @@
     </div>
     <div style="margin-top: 10px; margin-left: 15px; margin-right: 10px;" class="col">
         <div class="row">
-            <div style="height: 35px; width: 305px; color: black; padding-left: 15px;" class="txt progress" id="progress" #bar>1.00</div>
+            <div style="height: 35px; width: 305px; color: black; padding-left: 15px;" class="txt progress" [innerHTML]="product.revenu | bigvalue" id="bar"></div>
         </div>
         <div style="margin-top: 10px;" class="txt row">
             <div class="col-md-6">
-                <div class="row border bg-info border-info rounded">
-                    <span class="col d-flex flex-row">x1</span>
-                    <span class="col d-flex flex-row-reverse">4.00</span>
+                <div style="font-size: 20px;" class="row border bg-info border-info rounded">
+                    <span class="col-md-7 d-flex flex-row">x{{_qtmulti}}</span>
+                    <span class="col-md-5 d-flex flex-row-reverse" [innerHTML]="product.cout | bigvalue"></span>
                 </div>
             </div>
-            <span class="offset-md-1 col-md-5 border border-info rounded">00:00:50</span>
+            <span class="offset-md-1 col-md-5 border border-info rounded" [innerHTML]="product.timeleft | timer"></span>
         </div>
     </div>
 </div>
