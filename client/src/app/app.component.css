@@ -1,9 +1,9 @@
 .button{
   line-height: 100px;
 }
-
 .product{
   color: aliceblue;
+  box-shadow: 0 0 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22) !important;
 }
 .notif{
  height: 120px;
@@ -12,4 +12,10 @@
 .notif:hover{
   background-color:rgba(0,0, 0, 0.6);
   color: aliceblue;
+  border: none;
+  box-shadow: 0 0 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22) !important;
 }
+
+
+
+

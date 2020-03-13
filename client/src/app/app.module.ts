@@ -2,16 +2,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductsComponent } from './products/products.component';
-
-import { RestService } from './service/rest.service';
-import { BigvaluePipe } from './pipe/bigvalue.pipe';
 import { ModalComponent } from './modal/modal.component';
-import { FormsModule } from '@angular/forms';
+
+
+import { NotificationService } from './service/notification.service';
+import { RestService } from './service/rest.service';
+
+import { BigvaluePipe } from './pipe/bigvalue.pipe';
 import { TimerPipe } from './pipe/timer.pipe';
 
 @NgModule({
@@ -27,9 +30,10 @@ import { TimerPipe } from './pipe/timer.pipe';
     FormsModule,
     AppRoutingModule,
     HttpClientModule, 
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [RestService],
+  providers: [RestService, NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

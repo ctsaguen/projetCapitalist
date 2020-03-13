@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 
 import { Product } from '../model/product.model';
 
@@ -11,14 +11,20 @@ var ProgressBar = require('progressbar.js');
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  progressbar: any;
-  product: Product;
+  @ViewChild('bar') progressBarItem: ElementRef;
   lastupdate: number;
-  maxAchat: number;
+  server: string = 'http://localhost:8080/';
+  isRun: boolean;
+  bar: any;
+  product: Product;
   @Input()
   set prod(value: Product) {
     this.product = value;
+    if (this.product && this.product.timeleft > 0) {
+      this.lastupdate = Date.now();
+    }
   }
+
 
   _money: number;
   @Input()
@@ -34,48 +40,82 @@ export class ProductsComponent implements OnInit {
   }
 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
+  @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() { }
+  constructor(private renderer: Renderer2) { }
+
 
   ngOnInit(): void {
-    this.progressbar = new ProgressBar.Line("#bar", {
-      strokeWidth: 4,
-      easing: 'easeInOut',
-      duration: 1400,
-      color: '#FFEA82',
-      trailColor: '#eee',
-      trailWidth: 1,
-      svgStyle: {width: '100%', height: '100%'}
-    });
-   //setInterval(() => { this.calcScore(); }, 100);
+    // console.log(this.progressBarItem);
+    /*
+    setTimeout(function(){ 
+      alert("Hello"); }, 3000);
+    */
+
+    setInterval(() => { this.calcScore(); }, 1000);
+
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.bar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
+        strokeWidth: 4,
+        easing: 'easeInOut',
+        color: '#FFEA82',
+        trailColor: '#eee',
+        trailWidth: 1,
+        svgStyle: { width: '100%', height: '100%' },
+        from: { color: '#FFEA82' },
+        to: { color: '#ED6A5A' },
+        step: (state, bar) => {
+          bar.path.setAttribute('stroke', state.color);
+        }
+      });
+    }, 100)
+
   }
 
   production() {
-   // if (this.product.quantite >= 1) {
-      this.product.timeleft = this.product.vitesse;
-      this.lastupdate = Date.now();
-      this.progressbar.animate(1.0);
-     // this.progressbar.animate(1, { duration: this.product.vitesse });
-  //  }
+    // if (this.product.quantite >= 1) {
+
+    //bar.animate(1.0);
+    this.bar.animate(1, { duration: this.product.vitesse });
+    this.product.timeleft = this.product.vitesse;
+    this.lastupdate = Date.now();
+    this.isRun = true;
+    //  }
   }
 
   calcScore() {
-    if (this.product.timeleft != 0) {
-      this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
-      if (this.product.timeleft <= 0) {
+    if (this.isRun) {
+      if (this.product.timeleft > 0) {
+        this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+      }
+      else {
         this.product.timeleft = 0;
-       // this.progressbar.set(0);
+        this.lastupdate = 0;
         this.notifyProduction.emit(this.product);
+        this.isRun = false;
+        this.bar.set(0);
       }
     }
   }
 
-  calcMaxCanBuy() {
-    if(this._qtmulti==1000){
-      var x = (1/Math.log(this.product.croissance))*(1 - (this._money * (1 - this.product.croissance))/this.product.cout);
-      this.maxAchat = Math.floor(x); 
-      console.log(this.maxAchat);
-    }
+  calcMaxCanBuy(): number {
+    var a = 1 - ((this._money / this.product.cout) * (1 - this.product.croissance)) - this.product.croissance;
+    console.log(a)
+    var result = - (Math.log(a) - 1);
+    var maxAchat = Math.floor(result);
+    console.log(maxAchat);
+    return maxAchat;
+  }
+
+  achatProduct() {
+    console.log(this.calcMaxCanBuy())
+    //if(this._qtmulti >= this.calcMaxCanBuy()){
+    var coutAchat = this.product.cout * this._qtmulti
+    this.notifyMoney.emit(coutAchat);
+    // }
   }
 
 }

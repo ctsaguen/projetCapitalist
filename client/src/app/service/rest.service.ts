@@ -44,6 +44,20 @@ export class RestService {
     var headers = new HttpHeaders();
     headers.append("X-User",user);
     return headers;
-   }
+   };
+
+   putManager(manager : Pallier): Promise<Response> {
+    return this.http.put(this.server + "generic/manager",manager,{
+      headers: this.setHeaders(this.user)})
+    .toPromise().then(response => response)
+    .catch(this.handleError);
+   };
+
+   putProduit(product : Product): Promise<Response> {
+    return this.http.put(this.server + "generic/product",product,{
+      headers: this.setHeaders(this.user)})
+    .toPromise().then(response => response)
+    .catch(this.handleError);
+   };
    
 }

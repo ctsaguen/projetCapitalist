@@ -2,8 +2,9 @@
     cursor: pointer;
 }
 .img:hover{
-    opacity: 0.3;
+    opacity: 0.6;
+    box-shadow: 0 0 28px rgba(0,0,0,0.22), 0 10px 10px rgba(0,0,0,0.3) !important;
 }
 .img:active{
-    opacity: 0.1;
+    opacity: 0.4;
 }

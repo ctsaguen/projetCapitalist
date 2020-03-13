@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RestService } from './service/rest.service';
+import { NotificationService } from './service/notification.service';
+
+
 import { World } from './model/world.model';
 import { Product } from './model/product.model';
 import { Pallier } from './model/pallier.model'
@@ -16,7 +19,7 @@ export class AppComponent {
   qtmulti: number = 1;
   world: World = new World();
   server: string;
-  constructor(private service: RestService) {
+  constructor(private service: RestService, private notifyService : NotificationService) {
     this.server = service.getServer();
     service.getWorld().then(world => {
       this.world = world;
@@ -24,6 +27,11 @@ export class AppComponent {
     });
     this.createUsername();
   }
+
+  showToaster(){
+    this.notifyService.showSuccess("Data shown successfully !!", "Notification")
+}
+ 
   commutateur() {
     switch (this.qtmulti) {
       case 1:
@@ -43,6 +51,11 @@ export class AppComponent {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
   }
+
+  onAchatDone(m: number) {
+    this.world.money = this.world.money - m;
+  }
+
   onUsernameChanged(): void {
     localStorage.setItem("username", this.username);
     this.service.setUser(this.username);
@@ -55,4 +68,5 @@ export class AppComponent {
     }
     this.service.setUser(this.username);
   }
+  
 }

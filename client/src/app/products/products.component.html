@@ -1,19 +1,19 @@
 <div class="row">
     <div class="col-md-3">
-        <span><img src="../assets/paris.jpg" class="rounded-circle round img" (click)="production()" /> </span>
+        <span><img [attr.src]="server+product.logo" class="rounded-circle round img" (click)="production()" /> </span>
     </div>
-    <div style="margin-top: 10px; margin-left: 15px; margin-right: 10px;" class="col">
+    <div style="margin-top: 10px; margin-left: 15px; margin-right: 10px;" class="col-md">
         <div class="row">
-            <div style="height: 35px; width: 305px; color: black; padding-left: 15px;" class="txt progress" [innerHTML]="product.revenu | bigvalue" id="bar"></div>
+            <div style="height: 35px; width: 305px; color: black;" class="txt progress" #bar></div>
         </div>
         <div style="margin-top: 10px;" class="txt row">
-            <div class="col-md-6">
-                <div style="font-size: 20px;" class="row border bg-info border-info rounded">
+            <div class="col-md-6 btn btn-info" (click)="achatProduct()">
+                <div style="font-size: 20px;" class="row rounded">
                     <span class="col-md-7 d-flex flex-row">x{{_qtmulti}}</span>
                     <span class="col-md-5 d-flex flex-row-reverse" [innerHTML]="product.cout | bigvalue"></span>
                 </div>
             </div>
-            <span class="offset-md-1 col-md-5 border border-info rounded" [innerHTML]="product.timeleft | timer"></span>
+            <span style="padding-top: 2%;" class="offset-md-1 col-md-5 border border-info rounded" [innerHTML]="product.timeleft | timer"></span>
         </div>
     </div>
 </div>
