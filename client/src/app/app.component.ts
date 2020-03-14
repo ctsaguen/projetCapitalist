@@ -30,12 +30,12 @@ export class AppComponent {
   }
 
   disponibiliteManager():void{
+   this.dispoManager = false;
     this.world.managers.pallier.forEach(val => {
-      if(this.world.money > val.seuil){
-       this.dispoManager = true;
-      }
-      else{
-        this.dispoManager = false;
+      if(!this.dispoManager){
+        if(this.world.money > val.seuil){
+          this.dispoManager = true;
+         }
       }
     })
   }

@@ -22,9 +22,12 @@ export class ProductsComponent implements OnInit {
     this.product = value;
     if (this.product && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
+      let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      this.bar.set(progress);
+      this.bar.animate(1, { duration: this.product.timeleft });
     }
   }
-  
+
   _money: number;
   @Input()
   set money(value: number) {
@@ -45,7 +48,8 @@ export class ProductsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    setInterval(() => { this.calcScore();
+    setInterval(() => {
+      this.calcScore();
     }, 100);
   }
 
@@ -70,11 +74,12 @@ export class ProductsComponent implements OnInit {
 
   production() {
     // if (this.product.quantite >= 1) {
-    this.bar.animate(1, { duration: this.product.vitesse });
+    let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+    this.bar.animate(1, { duration: progress });
     this.product.timeleft = this.product.vitesse;
     this.lastupdate = Date.now();
     this.isRun = true;
-   //  }
+    //  }
   }
 
   calcScore() {
@@ -90,7 +95,7 @@ export class ProductsComponent implements OnInit {
         this.bar.set(0);
       }
     }
-    if(this.product.managerUnlocked){
+    if (this.product.managerUnlocked) {
       this.production();
     }
   }

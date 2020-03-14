@@ -40,7 +40,8 @@
         Upgrades</button>
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="angelModal.show()">Angel
         Upgrades</button>
-      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()"><span *ngIf="dispoManager" class="badge text-warning">New</span>Managers</button>
+      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()"><span
+          *ngIf="dispoManager" class="badge text-warning">New</span>Managers</button>
       <button class="button btn btn-info btn-block">Investors</button>
     </div>
     <div class="col-md-10">
@@ -84,7 +85,7 @@
       <button type="button" class="btn btn-danger" (click)="managersModal.hide()">Close</button>
     </div>
   </app-modal>
-  
+
   <app-modal #angelModal>
     <div class="app-modal-header">
       <h4 class="modal-title">Angels !</h4>
@@ -138,17 +139,19 @@
       <h4 class="modal-title">unlocks !</h4>
     </div>
     <div class="app-modal-body">
-      <div *ngFor="let unlock of world.allunlocks.pallier" class="row rounded notif border-bottom">
-        <div class="col-md-4">
-          <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
-        </div>
-        <div class="col-md-5">
-          <span class="txt row text-center font-weight-bold">{{unlock.name}}</span>
-          <span class="row text-center">{{unlock.typeratio}}</span>
-          <span class="row text-center">{{unlock.seuil}}</span>
-        </div>
-        <div class="col-md-3">
-          <button style="height: 100px; width: 100px;" class="btn btn-info">Hire!</button>
+      <div *ngFor="let unlock of world.allunlocks.pallier">
+        <div *ngIf="!unlock.allunlocks" class="row rounded notif border-bottom">
+          <div class="col-md-4">
+            <span><img src="../assets/paris.jpg" class="rounded-circle round" /></span>
+          </div>
+          <div class="col-md-5">
+            <span class="txt row text-center font-weight-bold">{{unlock.name}}</span>
+            <span class="row text-center">{{unlock.typeratio}}</span>
+            <span class="row text-center">{{unlock.seuil}}</span>
+          </div>
+          <div class="col-md-3">
+            <button style="height: 100px; width: 100px;" class="btn btn-info">Hire!</button>
+          </div>
         </div>
       </div>
     </div>
