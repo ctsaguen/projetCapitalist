@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 import { Product } from '../model/product.model';
 
@@ -41,18 +41,12 @@ export class ProductsComponent implements OnInit {
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor(private renderer: Renderer2) { }
+  constructor() { }
 
 
   ngOnInit(): void {
-    // console.log(this.progressBarItem);
-    /*
-    setTimeout(function(){ 
-      alert("Hello"); }, 3000);
-    */
-
-    setInterval(() => { this.calcScore(); }, 1000);
-
+    setInterval(() => { this.calcScore();
+    }, 100);
   }
 
   ngAfterViewInit() {
@@ -76,13 +70,11 @@ export class ProductsComponent implements OnInit {
 
   production() {
     // if (this.product.quantite >= 1) {
-
-    //bar.animate(1.0);
     this.bar.animate(1, { duration: this.product.vitesse });
     this.product.timeleft = this.product.vitesse;
     this.lastupdate = Date.now();
     this.isRun = true;
-    //  }
+   //  }
   }
 
   calcScore() {
@@ -97,6 +89,9 @@ export class ProductsComponent implements OnInit {
         this.isRun = false;
         this.bar.set(0);
       }
+    }
+    if(this.product.managerUnlocked){
+      this.production();
     }
   }
 

@@ -19,17 +19,27 @@ export class AppComponent {
   qtmulti: number = 1;
   world: World = new World();
   server: string;
+  dispoManager:boolean;
   constructor(private service: RestService, private notifyService : NotificationService) {
     this.server = service.getServer();
     service.getWorld().then(world => {
       this.world = world;
     });
+
     this.createUsername();
   }
-  ngAfterViewInit() {
-   
+
+  disponibiliteManager():void{
+    this.world.managers.pallier.forEach(val => {
+      if(this.world.money > val.seuil){
+       this.dispoManager = true;
+      }
+      else{
+        this.dispoManager = false;
+      }
+    })
   }
- 
+
   commutateur() {
     switch (this.qtmulti) {
       case 1:
@@ -48,6 +58,7 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.revenu;
     this.world.score = this.world.score + p.revenu;
+    this.disponibiliteManager();
   }
 
   onAchatDone(m: number) {
@@ -71,7 +82,16 @@ export class AppComponent {
    if(this.world.money >= m.seuil){
       this.world.money = this.world.money - m.seuil;
       var index = this.world.managers.pallier.indexOf(m);
+
       this.world.managers.pallier[index].unlocked = true;
+
+      this.world.products.product.forEach(element => {
+        if(m.idcible==element.id){
+           var index = this.world.products.product.indexOf(element);
+           this.world.products.product[index].managerUnlocked = true;
+        }
+      });
+      this.disponibiliteManager();
       this.notifyService.showSuccess("Achat de "+m.name+" effectué", "Notification")
    }
   }

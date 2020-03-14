@@ -40,7 +40,7 @@
         Upgrades</button>
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="angelModal.show()">Angel
         Upgrades</button>
-      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()">Managers</button>
+      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()"><span *ngIf="dispoManager" class="badge text-warning">New</span>Managers</button>
       <button class="button btn btn-info btn-block">Investors</button>
     </div>
     <div class="col-md-10">
