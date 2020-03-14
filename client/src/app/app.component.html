@@ -14,12 +14,12 @@
     <div class="col-md-4">
       <div class="txt row">
         <div class="col-md-5">
-          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti!=1000" class="btn btn-info"
+          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti!=100000" class="btn btn-info"
             (click)="commutateur()">
             <span>Buy</span><br />
             <span>x{{qtmulti}}</span>
           </button>
-          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti==1000" class="btn btn-info"
+          <button style="height: 100px; width: 155px; font-size: 20px;" *ngIf="qtmulti==100000" class="btn btn-info"
             (click)="commutateur()">
             <span>Buy</span><br />
             <span>Max</span>
@@ -46,15 +46,15 @@
     </div>
     <div class="col-md-10">
       <div style="margin-right: 80px; margin-left: 20px;" class="row">
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
+        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" 
           [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[0]"
           class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[1]"
+        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" 
+          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[1]" 
           class="product col-md-5 offset-md-2 shadow p-3 mb-5 bg-dark rounded">
         </app-products>
         <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[2]"
+          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[2]" 
           class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
       </div>
     </div>
@@ -76,7 +76,7 @@
           </div>
           <div class="col-md-3">
             <button style="height: 100px; width: 100px;" class="btn btn-info"
-              (click)="achatManager(manager)">Hire!</button>
+              (click)="achatManager(manager)" [disabled]="world.money < manager.seuil">Hire!</button>
           </div>
         </div>
       </div>
@@ -140,7 +140,7 @@
     </div>
     <div class="app-modal-body">
       <div *ngFor="let unlock of world.allunlocks.pallier">
-        <div *ngIf="!unlock.allunlocks" class="row rounded notif border-bottom">
+        <div *ngIf="!unlock.unlocked" class="row rounded notif border-bottom">
           <div class="col-md-4">
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /></span>
           </div>
