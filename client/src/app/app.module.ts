@@ -23,7 +23,7 @@ import { TimerPipe } from './pipe/timer.pipe';
     ProductsComponent,
     BigvaluePipe,
     ModalComponent,
-    TimerPipe,
+    TimerPipe
   ],
   imports: [
     BrowserModule,

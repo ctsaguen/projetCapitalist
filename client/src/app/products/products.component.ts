@@ -24,8 +24,7 @@ export class ProductsComponent implements OnInit {
       this.lastupdate = Date.now();
     }
   }
-
-
+  
   _money: number;
   @Input()
   set money(value: number) {

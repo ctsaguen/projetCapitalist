@@ -9,9 +9,17 @@ export class NotificationService {
   constructor(private toastr: ToastrService) { }
 
   showSuccess(message, title) {
-    this.toastr.success(message, title)
+    this.toastr.success(message, title, {
+      progressBar: true,
+      progressAnimation:'increasing',
+      closeButton: true
+    })
   }
   showError(message, title){
-    this.toastr.error(message, title)
+    this.toastr.error(message, title,{
+      progressBar: true,
+      progressAnimation:'increasing',
+      closeButton: true
+    })
   }
 }

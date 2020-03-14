@@ -23,14 +23,12 @@ export class AppComponent {
     this.server = service.getServer();
     service.getWorld().then(world => {
       this.world = world;
-      console.log(world)
     });
     this.createUsername();
   }
-
-  showToaster(){
-    this.notifyService.showSuccess("Data shown successfully !!", "Notification")
-}
+  ngAfterViewInit() {
+   
+  }
  
   commutateur() {
     switch (this.qtmulti) {
@@ -69,4 +67,12 @@ export class AppComponent {
     this.service.setUser(this.username);
   }
   
+  achatManager(m : Pallier){
+   if(this.world.money >= m.seuil){
+      this.world.money = this.world.money - m.seuil;
+      var index = this.world.managers.pallier.indexOf(m);
+      this.world.managers.pallier[index].unlocked = true;
+      this.notifyService.showSuccess("Achat de "+m.name+" effectué", "Notification")
+   }
+  }
 }
