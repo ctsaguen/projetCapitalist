@@ -87,6 +87,8 @@ export class AppComponent {
     this.world.money = this.world.money - m;
     //on teste si les unlocks généraux sont débloqués
     this.bonusAllunlock()
+    this.disponibiliteManager();
+    this.disponibiliteUpgrades();
   }
 
   //ici on enregistre les changements de nom d'utilisateur effectué par l'utilisateur
