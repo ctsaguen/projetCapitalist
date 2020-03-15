@@ -120,11 +120,18 @@ export class ProductsComponent implements OnInit {
 
   // cette fonction lance une production
   achatProduct() {
-    console.log(this.calcMaxCanBuy())
+    //console.log(this.calcMaxCanBuy())
     //if(this._qtmulti >= this.calcMaxCanBuy()){
     var coutAchat = this.product.cout * this._qtmulti;
-    this.product.quantite = this.product.quantite++;
+    this.product.quantite = this.product.quantite+1;
     this.notifyMoney.emit(coutAchat);
+    this.product.palliers.pallier.forEach(value => {
+      if(!value.unlocked && this.product.quantite > value.seuil){
+        this.product.palliers.pallier[this.product.palliers.pallier.indexOf(value)].unlocked = true;
+        console.log("je suis entré")
+        this.calcUpgrade(value);
+      }
+    })
     // }
   }
   
@@ -140,10 +147,8 @@ export class ProductsComponent implements OnInit {
       case 'ange':
         console.log('ange');
         break;
-      default:
-        break;
     }
-    this.notifyService.showSuccess("déblocage d'un bonus "+pallier.typeratio+"effectué pour "+this.product.name, "BONUS")
+    this.notifyService.showSuccess("déblocage d'un bonus "+pallier.typeratio+" effectué pour "+this.product.name, "BONUS")
   }
 
 }
