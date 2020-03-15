@@ -43,7 +43,7 @@
         Upgrades</button>
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()"><span
           *ngIf="dispoManager" class="badge text-warning">New</span>Managers</button>
-      <button class="button btn btn-info btn-block">Investors</button>
+      <button class="button btn btn-info btn-block" (click)="investorsModal.show()">Investors</button>
     </div>
     <div class="col-md-10">
       <div style="margin-right: 80px; margin-left: 20px;" class="row">
@@ -60,6 +60,28 @@
       </div>
     </div>
   </div>
+
+  <app-modal #investorsModal>
+    <div class="app-modal-header">
+      <h4 class="modal-title">Angels Investors !</h4>
+    </div>
+    <div class="app-modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span><br/>
+          <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>
+        </div>
+        <button style="line-height: 50px;" class="txt col-md-6 btn btn-lg btn-primary">
+          <span [innerHTML]="world.activeangels | bigvalue"></span><span> angels</span><br/>
+          <span>To Claim with Restart</span>
+        </button>
+      </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-danger" (click)="investorsModal.hide()">Close</button>
+    </div>
+  </app-modal>
+
   <app-modal #managersModal>
     <div class="app-modal-header">
       <h4 class="modal-title">Managers !</h4>
@@ -102,7 +124,7 @@
           <span class="row text-center">{{angel.seuil}}</span>
         </div>
         <div class="col-md-3">
-          <button style="height: 100px; width: 100px;" class="btn btn-info">Hire!</button>
+          <button style="height: 100px; width: 100px;" class="btn btn-primary">Buy!</button>
         </div>
       </div>
     </div>

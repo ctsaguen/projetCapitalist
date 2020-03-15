@@ -81,13 +81,13 @@ export class ProductsComponent implements OnInit {
   }
   //fonction de production utilisé quand le joueur lance une production
   production() {
-    // if (this.product.quantite >= 1) {
+     if (this.product.quantite >= 1) {
     let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
     this.bar.animate(1, { duration: progress });
     this.product.timeleft = this.product.vitesse;
     this.lastupdate = Date.now();
     this.isRun = true;
-    //  }
+     }
   }
   //calcul du score du joueur après une production, elle est lancé chaque 100ms par le hook ngOnInit et mis à jour les resultats 
   calcScore() {
@@ -98,10 +98,10 @@ export class ProductsComponent implements OnInit {
       else {
         this.product.timeleft = 0;
         this.lastupdate = 0;
-        this.notifyProduction.emit(this.product);
         this.isRun = false;
         this.bar.set(0);
       }
+      this.notifyProduction.emit(this.product);
     }
     if (this.product.managerUnlocked) {
       this.production();
@@ -111,7 +111,6 @@ export class ProductsComponent implements OnInit {
   //cette fonction calcul la quantité maximal que que le joueur peut acheter en fonction de son argent
   calcMaxCanBuy(): number {
     var a = 1 - ((this._money / this.product.cout) * (1 - this.product.croissance)) - this.product.croissance;
-    console.log(a)
     var result = - (Math.log(a) - 1);
     var maxAchat = Math.floor(result);
     console.log(maxAchat);
