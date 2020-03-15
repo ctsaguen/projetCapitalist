@@ -36,7 +36,8 @@
   <div style="margin-top: 40px;" class="row">
     <div style="line-height: 100em;" class="col-md-2">
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="unlockModal.show()">Unlocks</button>
-      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="upgradModal.show()">Cash
+      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="upgradModal.show()"><span
+          *ngIf="dispoUpgrad" class="badge text-warning">New</span>Cash
         Upgrades</button>
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="angelModal.show()">Angel
         Upgrades</button>
@@ -46,15 +47,15 @@
     </div>
     <div class="col-md-10">
       <div style="margin-right: 80px; margin-left: 20px;" class="row">
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" 
+        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
           [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[0]"
           class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)" 
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[1]" 
+        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
+          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[1]"
           class="product col-md-5 offset-md-2 shadow p-3 mb-5 bg-dark rounded">
         </app-products>
         <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[2]" 
+          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[2]"
           class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
       </div>
     </div>
@@ -75,8 +76,8 @@
             <span class="row text-center">{{manager.seuil}}</span>
           </div>
           <div class="col-md-3">
-            <button style="height: 100px; width: 100px;" class="btn btn-info"
-              (click)="achatManager(manager)" [disabled]="world.money < manager.seuil">Hire!</button>
+            <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatManager(manager)"
+              [disabled]="world.money < manager.seuil">Hire!</button>
           </div>
         </div>
       </div>
@@ -115,17 +116,20 @@
       <h4 class="modal-title">Cash Upgrades !</h4>
     </div>
     <div class="app-modal-body">
-      <div *ngFor="let upgrade of world.upgrades.pallier" class="row rounded notif border-bottom">
-        <div class="col-md-4">
-          <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
-        </div>
-        <div class="col-md-5">
-          <span class="txt row text-center font-weight-bold">{{upgrade.name}}</span>
-          <span class="row text-center">{{upgrade.typeratio}}</span>
-          <span class="row text-center">{{upgrade.seuil}}</span>
-        </div>
-        <div class="col-md-3">
-          <button style="height: 100px; width: 100px;" class="btn btn-info">Hire!</button>
+      <div *ngFor="let upgrade of world.upgrades.pallier">
+        <div *ngIf="!upgrade.unlocked" class="row rounded notif border-bottom">
+          <div class="col-md-4">
+            <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
+          </div>
+          <div class="col-md-5">
+            <span class="txt row text-center font-weight-bold">{{upgrade.name}}</span>
+            <span class="row text-center">{{upgrade.typeratio}}</span>
+            <span class="row text-center">{{upgrade.seuil}}</span>
+          </div>
+          <div class="col-md-3">
+            <button style="height: 100px; width: 100px;" class="btn btn-primary" (click)="achatUpgrade(upgrade)"
+              [disabled]="world.money < upgrade.seuil">Buy!</button>
+          </div>
         </div>
       </div>
     </div>
@@ -144,14 +148,12 @@
           <div class="col-md-4">
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /></span>
           </div>
-          <div class="col-md-5">
+          <div class="col-md-8">
             <span class="txt row text-center font-weight-bold">{{unlock.name}}</span>
             <span class="row text-center">{{unlock.typeratio}}</span>
             <span class="row text-center">{{unlock.seuil}}</span>
           </div>
-          <div class="col-md-3">
-            <button style="height: 100px; width: 100px;" class="btn btn-info">Hire!</button>
-          </div>
+
         </div>
       </div>
     </div>

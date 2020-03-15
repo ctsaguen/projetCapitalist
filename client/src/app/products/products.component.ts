@@ -123,13 +123,14 @@ export class ProductsComponent implements OnInit {
     //console.log(this.calcMaxCanBuy())
     //if(this._qtmulti >= this.calcMaxCanBuy()){
     var coutAchat = this.product.cout * this._qtmulti;
-    this.product.quantite = this.product.quantite+1;
+    this.product.quantite = this.product.quantite+this._qtmulti;
     this.notifyMoney.emit(coutAchat);
+    //bonus d'achat spécifique à chaque produit
     this.product.palliers.pallier.forEach(value => {
       if(!value.unlocked && this.product.quantite > value.seuil){
         this.product.palliers.pallier[this.product.palliers.pallier.indexOf(value)].unlocked = true;
-        console.log("je suis entré")
         this.calcUpgrade(value);
+        this.notifyService.showSuccess("déblocage d'un bonus "+value.typeratio+" effectué pour "+this.product.name, "BONUS")
       }
     })
     // }
@@ -148,7 +149,6 @@ export class ProductsComponent implements OnInit {
         console.log('ange');
         break;
     }
-    this.notifyService.showSuccess("déblocage d'un bonus "+pallier.typeratio+" effectué pour "+this.product.name, "BONUS")
   }
 
 }
