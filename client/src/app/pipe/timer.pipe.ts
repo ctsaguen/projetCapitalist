@@ -28,6 +28,9 @@ export class TimerPipe implements PipeTransform {
       m = Math.trunc(value/60);
       value = value - (m*60);
     }
+    if(value<60){
+      s = value;
+    }
     return this.chainage(h)+":"+this.chainage(m)+":"+this.chainage(s);
   }
 

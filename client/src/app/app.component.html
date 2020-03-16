@@ -39,7 +39,8 @@
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="upgradModal.show()"><span
           *ngIf="dispoUpgrad" class="badge text-warning">New</span>Cash
         Upgrades</button>
-      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="angelModal.show()">Angel
+      <button class="button btn btn-info btn-block" data-toggle="modal" (click)="angelModal.show()"><span
+        *ngIf="dispoAngel" class="badge text-warning">New</span>Angel
         Upgrades</button>
       <button class="button btn btn-info btn-block" data-toggle="modal" (click)="managersModal.show()"><span
           *ngIf="dispoManager" class="badge text-warning">New</span>Managers</button>
@@ -114,17 +115,19 @@
       <h4 class="modal-title">Angels !</h4>
     </div>
     <div class="app-modal-body">
-      <div *ngFor="let angel of world.angelupgrades.pallier" class="row rounded notif border-bottom">
-        <div class="col-md-4">
-          <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
-        </div>
-        <div class="col-md-5">
-          <span class="txt row text-center font-weight-bold">{{angel.name}}</span>
-          <span class="row text-center">{{angel.typeratio}}</span>
-          <span class="row text-center">{{angel.seuil}}</span>
-        </div>
-        <div class="col-md-3">
-          <button style="height: 100px; width: 100px;" class="btn btn-primary">Buy!</button>
+      <div *ngFor="let angel of world.angelupgrades.pallier">
+        <div *ngIf="!angel.unlocked" class="row rounded notif border-bottom">
+          <div class="col-md-4">
+            <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
+          </div>
+          <div class="col-md-5">
+            <span class="txt row text-center font-weight-bold">{{angel.name}}</span>
+            <span class="row text-center">{{angel.typeratio}}</span>
+            <span class="row text-center">{{angel.seuil}}</span>
+          </div>
+          <div class="col-md-3">
+            <button  [disabled]="world.activeangels <  angel.seuil" style="height: 100px; width: 100px;" class="btn btn-primary">Buy!</button>
+          </div>
         </div>
       </div>
     </div>

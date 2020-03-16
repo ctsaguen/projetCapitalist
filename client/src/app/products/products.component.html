@@ -7,12 +7,12 @@
             <div style="height: 35px; width: 305px; color: black;" class="txt progress" #bar></div>
         </div>
         <div style="margin-top: 10px;" class="txt row">
-            <div class="col-md-6 btn btn-info" (click)="achatProduct()">
+            <button [disabled]="_qtmulti >  calcMaxCanBuy()" class="col-md-6 btn btn-info" (click)="achatProduct()">
                 <div style="font-size: 20px;" class="row rounded">
                     <span class="col-md-7 d-flex flex-row">x{{_qtmulti}}</span>
                     <span class="col-md-5 d-flex flex-row-reverse" [innerHTML]="product.cout | bigvalue"></span>
                 </div>
-            </div>
+            </button>
             <span style="padding-top: 2%;" class="offset-md-1 col-md-5 border border-info rounded" [innerHTML]="product.timeleft | timer"></span>
         </div>
     </div>

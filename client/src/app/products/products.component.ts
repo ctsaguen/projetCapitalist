@@ -18,8 +18,9 @@ export class ProductsComponent implements OnInit {
   server: string = 'http://localhost:8080/';
   isRun: boolean;
   bar: any;
+  king: boolean = false;
   //cette variable sert à faire évoluer les seuils de bonus
-  seuil : number;
+  seuil: number;
 
   //on récupére le produit du world
   product: Product;
@@ -43,15 +44,19 @@ export class ProductsComponent implements OnInit {
   _qtmulti: number;
   @Input()
   set qtmulti(value: number) {
-    this._qtmulti = value;
-    if (this._qtmulti && this.product) this.calcMaxCanBuy();
+    if(value >= 100000){
+      this._qtmulti = this.calcMaxCanBuy();
+    }
+    else{
+      this._qtmulti = value;
+    }
   }
   //on renvoie à la couche mère le le Product en production 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   //on renvoie à la couche mère le coût total du produit acheté 
   @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor(private notifyService : NotificationService) { }
+  constructor(private notifyService: NotificationService) { }
 
 
   ngOnInit(): void {
@@ -81,13 +86,13 @@ export class ProductsComponent implements OnInit {
   }
   //fonction de production utilisé quand le joueur lance une production
   production() {
-     if (this.product.quantite >= 1) {
-    let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-    this.bar.animate(1, { duration: progress });
-    this.product.timeleft = this.product.vitesse;
-    this.lastupdate = Date.now();
-    this.isRun = true;
-     }
+    if (this.product.quantite >= 1) {
+      let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      this.bar.animate(1, { duration: progress });
+      this.product.timeleft = this.product.vitesse;
+      this.lastupdate = Date.now();
+      this.isRun = true;
+    }
   }
   //calcul du score du joueur après une production, elle est lancé chaque 100ms par le hook ngOnInit et mis à jour les resultats 
   calcScore() {
@@ -110,31 +115,38 @@ export class ProductsComponent implements OnInit {
 
   //cette fonction calcul la quantité maximal que que le joueur peut acheter en fonction de son argent
   calcMaxCanBuy(): number {
-    var a = 1 - ((this._money / this.product.cout) * (1 - this.product.croissance)) - this.product.croissance;
-    var result = - (Math.log(a) - 1);
-    var maxAchat = Math.floor(result);
-    console.log(maxAchat);
-    return maxAchat;
+    let quantiteMax: number = 0;
+    let maxim: number = 0;
+    let max: number = 1;
+    while (maxim < this._money) {
+      max = max * this.product.cout;
+      maxim = maxim + max;
+      quantiteMax = quantiteMax + 1;
+      if(this.product.cout > this._money){
+        quantiteMax = 0;
+      }
+    }
+    return quantiteMax;
   }
 
   // cette fonction lance une production
   achatProduct() {
     //console.log(this.calcMaxCanBuy())
-    //if(this._qtmulti >= this.calcMaxCanBuy()){
-    var coutAchat = this.product.cout * this._qtmulti;
-    this.product.quantite = this.product.quantite+this._qtmulti;
-    this.notifyMoney.emit(coutAchat);
-    //bonus d'achat spécifique à chaque produit
-    this.product.palliers.pallier.forEach(value => {
-      if(!value.unlocked && this.product.quantite > value.seuil){
-        this.product.palliers.pallier[this.product.palliers.pallier.indexOf(value)].unlocked = true;
-        this.calcUpgrade(value);
-        this.notifyService.showSuccess("déblocage d'un bonus "+value.typeratio+" effectué pour "+this.product.name, "BONUS")
-      }
-    })
-    // }
+    if (this._qtmulti <= this.calcMaxCanBuy()) {
+      var coutAchat = this.product.cout * this._qtmulti;
+      this.product.quantite = this.product.quantite + this._qtmulti;
+      this.notifyMoney.emit(coutAchat);
+      //bonus d'achat spécifique à chaque produit
+      this.product.palliers.pallier.forEach(value => {
+        if (!value.unlocked && this.product.quantite > value.seuil) {
+          this.product.palliers.pallier[this.product.palliers.pallier.indexOf(value)].unlocked = true;
+          this.calcUpgrade(value);
+          this.notifyService.showSuccess("déblocage d'un bonus " + value.typeratio + " effectué pour " + this.product.name, "BONUS")
+        }
+      })
+    }
   }
-  
+
   //ici on calcul si le joeur a débloqué un bonus et il y'a 3 type de bonus, à savoir vitesse, gain ou encore ange
   calcUpgrade(pallier: Pallier) {
     switch (pallier.typeratio) {
@@ -143,9 +155,6 @@ export class ProductsComponent implements OnInit {
         break;
       case 'gain':
         this.product.revenu = this.product.revenu * pallier.ratio;
-        break;
-      case 'ange':
-        console.log('ange');
         break;
     }
   }
