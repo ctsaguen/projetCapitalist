@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div style="margin-top: 15px;" class="row">
+  <div class="row navB  bg-dark">
     <div class="col-md-4">
       <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
       <!--<img [attr.src]="server+world.logo" />-->
@@ -9,7 +9,10 @@
       </span>
     </div>
     <!--<div class="col-md-4"><span [innerHTML]="world.money | bigvalue"> </span></div>-->
-    <div class="col-md-4 text-center txt" style="padding-top: 25px;"><span [innerHTML]="world.money | bigvalue"></span>
+    <div class="col-md-4 text-center txt" style="padding-top: 25px;">
+      <div class="money rounded">
+        <span>$</span><span [innerHTML]="world.money | bigvalue"></span>
+      </div>
     </div>
     <div class="col-md-4">
       <div class="txt row">
@@ -64,18 +67,28 @@
 
   <app-modal #investorsModal>
     <div class="app-modal-header">
-      <h4 class="modal-title">Angels Investors !</h4>
+      <h4 class="modal-title">Investors !</h4>
     </div>
-    <div class="app-modal-body">
+    <div style="color: aliceblue;" class="app-modal-body">
+      <div style="height: 80px; padding-top: 10px; background-color: #58355E;" class="row border rounded text-center">
+        <span class="col-md-12">Your Total angels</span>
+        <span style="font-size: 30px;" class="col-md-12">{{world.totalangels}}</span>
+      </div>
       <div class="row">
-        <div class="col-md-6">
-          <span>Total Anges:&nbsp;</span><span [innerHTML]="world.totalangels | bigvalue"></span><br/>
-          <span>Bonus Per Angels:&nbsp;{{world.angelbonus}} %</span>
+        <div style="height: 200px; padding-top: 40px; padding-left: 30px;" class="col-md-6 border bg-info rounded">
+          <div class="row">
+            <span style="font-size: 35px;" class="col-md-12 text-center">{{world.angelbonus}}%</span>
+            <span style="margin-left: 20px;">Profit Bonus Per angel</span>
+          </div>
         </div>
-        <button style="line-height: 50px;" class="txt col-md-6 btn btn-lg btn-primary">
-          <span [innerHTML]="world.activeangels | bigvalue"></span><span> angels</span><br/>
-          <span>To Claim with Restart</span>
-        </button>
+        <div style="height: 200px; padding-top: 4px; padding-left: 15px;" class="col-md-6 border bg-info rounded">
+          <div class="row">
+            <span style="font-size: 35px;" class="col-md-12 text-center">{{world.activeangels}}</span>
+            <span style="margin-left: 20px;">Angels Claimed with Restart</span>
+            <button class="col-md-9 btn text-white border rounded border-info validInv">Claim</button>
+            <span class="col-md-12 text-center">Restart Your businesses</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="app-modal-footer">
@@ -94,7 +107,7 @@
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
           </div>
           <div class="col-md-5">
-            <span class="txt row text-center font-weight-bold">{{manager.name}}</span>
+            <span class="txt2 row text-center font-weight-bold">{{manager.name}}</span>
             <span class="row text-center"></span>
             <span class="row text-center">{{manager.seuil}}</span>
           </div>
@@ -121,7 +134,7 @@
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
           </div>
           <div class="col-md-5">
-            <span class="txt row text-center font-weight-bold">{{angel.name}}</span>
+            <span class="txt2 row text-center font-weight-bold">{{angel.name}}</span>
             <span class="row text-center">{{angel.typeratio}}</span>
             <span class="row text-center">{{angel.seuil}}</span>
           </div>
@@ -147,7 +160,7 @@
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
           </div>
           <div class="col-md-5">
-            <span class="txt row text-center font-weight-bold">{{upgrade.name}}</span>
+            <span class="txt2 row text-center font-weight-bold">{{upgrade.name}}</span>
             <span class="row text-center">{{upgrade.typeratio}}</span>
             <span class="row text-center">{{upgrade.seuil}}</span>
           </div>
@@ -165,7 +178,7 @@
 
   <app-modal #unlockModal>
     <div class="app-modal-header">
-      <h4 class="modal-title">unlocks !</h4>
+      <h4 class="modal-title">Unlock !</h4>
     </div>
     <div class="app-modal-body">
       <div *ngFor="let unlock of world.allunlocks.pallier">
@@ -174,7 +187,7 @@
             <span><img src="../assets/paris.jpg" class="rounded-circle round" /></span>
           </div>
           <div class="col-md-8">
-            <span class="txt row text-center font-weight-bold">{{unlock.name}}</span>
+            <span class="txt2 row text-center font-weight-bold">{{unlock.name}}</span>
             <span class="row text-center">{{unlock.typeratio}}</span>
             <span class="row text-center">{{unlock.seuil}}</span>
           </div>
@@ -187,3 +200,6 @@
     </div>
   </app-modal>
 </div>
+<footer  class=" foot bg-dark">
+  <div class="txt text-center">Created by &copy; kevin and Margaux </div>
+</footer>

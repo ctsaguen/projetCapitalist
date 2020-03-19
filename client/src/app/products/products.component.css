@@ -8,3 +8,16 @@
 .img:active{
     opacity: 0.4;
 }
+.quantite{
+    position: absolute;
+    z-index: 2;
+   margin-top: -25px; 
+   width: 100px;
+   height: 25px;
+}
+.cont{
+    position: absolute;
+    z-index: 2;
+    margin-left: 10px;
+   margin-top: 3px;
+}

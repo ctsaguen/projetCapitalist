@@ -19,6 +19,7 @@ export class ProductsComponent implements OnInit {
   isRun: boolean;
   bar: any;
   king: boolean = false;
+  maxAchat: number;
   //cette variable sert à faire évoluer les seuils de bonus
   seuil: number;
 

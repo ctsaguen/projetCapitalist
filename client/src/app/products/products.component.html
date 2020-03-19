@@ -1,10 +1,15 @@
 <div class="row">
     <div class="col-md-3">
-        <span><img [attr.src]="server+product.logo" class="rounded-circle round img" (click)="production()" /> </span>
+        <span>
+            <img [attr.src]="server+product.logo" class="rounded-circle round img" (click)="production()" /> 
+            <span class="quantite text-center bg-info rounded txt">{{product.quantite}}</span>
+        </span>
     </div>
     <div style="margin-top: 10px; margin-left: 15px; margin-right: 10px;" class="col-md">
         <div class="row">
-            <div style="height: 35px; width: 305px; color: black;" class="txt progress" #bar></div>
+            <div style="height: 35px; width: 305px; color: black;" class="txt progress" #bar>
+                <span class="cont" [innerHTML]="product.revenu | bigvalue"></span>
+            </div>
         </div>
         <div style="margin-top: 10px;" class="txt row">
             <button [disabled]="_qtmulti >  calcMaxCanBuy()" class="col-md-6 btn btn-info" (click)="achatProduct()">
