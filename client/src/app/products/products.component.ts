@@ -120,10 +120,13 @@ export class ProductsComponent implements OnInit {
   //cette fonction calcul la quantité maximal que que le joueur peut acheter en fonction de son argent
   calcMaxCanBuy(): number {
     let quantiteMax: number = 0;
-    if(this.product.cout*this.product.croissance < this._money){
+    if(this.product.cout*this.product.croissance <= this._money){
       let calPrelem = (this.product.cout - (this._money*(1-this.product.croissance)))/this.product.cout;
       let quant = (Math.log(calPrelem))/Math.log(this.product.croissance);
       quantiteMax = Math.trunc(quant-1);
+      if(isNaN(quantiteMax)){
+        quantiteMax = 0;
+      }
       
     }
     return quantiteMax;
