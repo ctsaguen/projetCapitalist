@@ -18,16 +18,19 @@ export class ProductsComponent implements OnInit {
   server: string = 'http://localhost:8080/';
   isRun: boolean;
   bar: any;
-  king: boolean = false;
   maxAchat: number;
+  
   //cette variable sert à faire évoluer les seuils de bonus
   seuil: number;
-
   //on récupére le produit du world
   product: Product;
   @Input()
   set prod(value: Product) {
     this.product = value;
+
+    //on initialise le coût d'achat
+    this.maxAchat = this.product.cout;
+
     if (this.product && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
       let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
@@ -45,10 +48,10 @@ export class ProductsComponent implements OnInit {
   _qtmulti: number;
   @Input()
   set qtmulti(value: number) {
-    if(value >= 100000){
+    if (value >= 100000) {
       this._qtmulti = this.calcMaxCanBuy();
     }
-    else{
+    else {
       this._qtmulti = value;
     }
   }
@@ -117,26 +120,26 @@ export class ProductsComponent implements OnInit {
   //cette fonction calcul la quantité maximal que que le joueur peut acheter en fonction de son argent
   calcMaxCanBuy(): number {
     let quantiteMax: number = 0;
-    let maxim: number = 0;
-    let max: number = 1;
-    while (maxim < this._money) {
-      max = max * this.product.cout;
-      maxim = maxim + max;
-      quantiteMax = quantiteMax + 1;
-      if(this.product.cout > this._money){
-        quantiteMax = 0;
-      }
+    if(this.product.cout*this.product.croissance < this._money){
+      let calPrelem = (this.product.cout - (this._money*(1-this.product.croissance)))/this.product.cout;
+      let quant = (Math.log(calPrelem))/Math.log(this.product.croissance);
+      quantiteMax = Math.trunc(quant-1);
+      
     }
     return quantiteMax;
   }
 
-  // cette fonction lance une production
+  // cette fonction lance l'achat d'un produit
   achatProduct() {
     //console.log(this.calcMaxCanBuy())
     if (this._qtmulti <= this.calcMaxCanBuy()) {
-      var coutAchat = this.product.cout * this._qtmulti;
-      this.product.quantite = this.product.quantite + this._qtmulti;
+      var coutAchat = 0;
+      for(let i=0;i<this._qtmulti;i++){
+        this.maxAchat = this.maxAchat*this.product.croissance;
+        coutAchat = coutAchat + this.maxAchat;
+      }
       this.notifyMoney.emit(coutAchat);
+      this.product.quantite = this.product.quantite + this._qtmulti;
       //bonus d'achat spécifique à chaque produit
       this.product.palliers.pallier.forEach(value => {
         if (!value.unlocked && this.product.quantite > value.seuil) {

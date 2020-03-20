@@ -133,6 +133,7 @@ export class AppComponent {
         }
       });
       this.disponibiliteManager();
+      this.disponibiliteUpgrades();
       this.notifyService.showSuccess("Achat de " + m.name + " effectué", "Manager")
     }
   }
@@ -155,6 +156,7 @@ export class AppComponent {
         })
       }
       this.disponibiliteUpgrades();
+      this.disponibiliteManager();
     }
   }
 
@@ -187,6 +189,8 @@ export class AppComponent {
         }
       }
     }
+    this.disponibiliteManager();
+    this.disponibiliteUpgrades();
   }
 
   bonusAllunlock() {
