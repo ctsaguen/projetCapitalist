@@ -94,6 +94,8 @@ export class AppComponent {
     this.disponibiliteManager();
     //on teste la disponibilté des upgrade
     this.disponibiliteUpgrades();
+    //signalisation au serveur de l'achat d'un produit 
+    this.service.putProduit(p);
   }
 
   //on valide l'achat d'un produit dans le component Product
@@ -134,6 +136,9 @@ export class AppComponent {
       });
       this.disponibiliteManager();
       this.disponibiliteUpgrades();
+      //signaler au serveur de l'achat d'un manager
+      this.service.putManager(m);
+
       this.notifyService.showSuccess("Achat de " + m.name + " effectué", "Manager")
     }
   }
@@ -155,6 +160,9 @@ export class AppComponent {
           }
         })
       }
+      //signaler l'achat d'un upgrade au serveur 
+      this.service.putUpgrade(p);
+      
       this.disponibiliteUpgrades();
       this.disponibiliteManager();
     }

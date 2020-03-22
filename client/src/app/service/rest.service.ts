@@ -59,5 +59,17 @@ export class RestService {
     .toPromise().then(response => response)
     .catch(this.handleError);
    };
+
+   public putUpgrade(upgrade: Pallier): Promise<Response> {
+    console.log(upgrade);
+    return this.http
+      .put(this.server + "api/upgrade", upgrade, {
+        headers: { "X-user": this.getUser() }
+      })
+      .toPromise()
+      .then(response => response)
+      .catch(this.handleError);
+  }
+
    
 }

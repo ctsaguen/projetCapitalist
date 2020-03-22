@@ -19,6 +19,7 @@ export class ProductsComponent implements OnInit {
   isRun: boolean;
   bar: any;
   maxAchat: number;
+  progress: any;
   
   //cette variable sert à faire évoluer les seuils de bonus
   seuil: number;
@@ -31,11 +32,10 @@ export class ProductsComponent implements OnInit {
     //on initialise le coût d'achat
     this.maxAchat = this.product.cout;
 
-    if (this.product && this.product.timeleft > 0) {
+    if (this.product.managerUnlocked && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
-      let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      this.bar.set(progress);
-      this.bar.animate(1, { duration: this.product.timeleft });
+      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      this.bar.animate(1, { duration: this.progress });
     }
   }
   //on récupère les gains du joueur 
@@ -91,8 +91,8 @@ export class ProductsComponent implements OnInit {
   //fonction de production utilisé quand le joueur lance une production
   production() {
     if (this.product.quantite >= 1) {
-      let progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      this.bar.animate(1, { duration: progress });
+      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
+      this.bar.animate(1, { duration: this.progress });
       this.product.timeleft = this.product.vitesse;
       this.lastupdate = Date.now();
       this.isRun = true;
