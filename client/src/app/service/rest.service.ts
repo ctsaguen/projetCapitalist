@@ -34,16 +34,17 @@ export class RestService {
   }
 
   getWorld(): Promise<World> {
+    console.log("username:"+this.getUser())
+    let headers = this.setHeaders(this.getUser())
     return this.http.get(this.server + "generic/world", {
-      headers: this.setHeaders(this.getUser())
+      headers: headers
     })
       .toPromise().then(response => response)
       .catch(this.handleError);
   };
 
   private setHeaders(user: string): HttpHeaders {
-    var headers = new HttpHeaders();
-    headers.append("X-User", user);
+    var headers = new HttpHeaders({ 'X-User': user});
     return headers;
   };
 

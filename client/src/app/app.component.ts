@@ -26,11 +26,11 @@ export class AppComponent {
 
   constructor(private service: RestService, private notifyService: NotificationService) {
     this.server = service.getServer();
+    this.createUsername();
     service.getWorld().then(world => {
       this.world = world;
     });
 
-    this.createUsername();
   }
 
   //ici on teste la disponibilité d'un manager pour le signaler visuellement à l'utilisateur d'un changement et c'est utilisé dans lors des nombreuses productions.
