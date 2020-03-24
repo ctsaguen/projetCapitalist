@@ -17,53 +17,63 @@ export class RestService {
 
   constructor(private http: HttpClient) { }
 
-  public getUser() : string{
+  public getUser(): string {
     return this.user;
   }
-  public setUser(user : string){
+  public setUser(user: string) {
     this.user = user;
   }
 
-  public getServer() : string{
+  public getServer(): string {
     return this.server;
   }
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message || error);
+  }
+
+  getWorld(): Promise<World> {
+    return this.http.get(this.server + "generic/world", {
+      headers: this.setHeaders(this.getUser())
+    })
+      .toPromise().then(response => response)
+      .catch(this.handleError);
+  };
+
+  private setHeaders(user: string): HttpHeaders {
+    var headers = new HttpHeaders();
+    headers.append("X-User", user);
+    return headers;
+  };
+
+  public putManager(manager: Pallier): Promise<Response> {
+    // console.log(upgrade);
+     return this.http
+       .put(this.server + "generic/manager", manager, {
+         headers: { "X-user": this.getUser() }
+       })
+       .toPromise()
+       .then(response => response)
+       .catch(this.handleError);
    }
 
-   getWorld(): Promise<World> {
-    return this.http.get(this.server + "generic/world", {
-      headers: this.setHeaders(this.user)})
-    .toPromise().then(response => response)
-    .catch(this.handleError);
-   };
 
-   private setHeaders(user : string) : HttpHeaders {
-    var headers = new HttpHeaders();
-    headers.append("X-User",user);
-    return headers;
-   };
+  public putProduit(product: Product): Promise<Response> {
+    // console.log(upgrade);
+     return this.http
+       .put(this.server + "generic/product", product, {
+         headers: { "X-user": this.getUser() }
+       })
+       .toPromise()
+       .then(response => response)
+       .catch(this.handleError);
+   }
 
-   putManager(manager : Pallier): Promise<Response> {
-    return this.http.put(this.server + "generic/manager",manager,{
-      headers: this.setHeaders(this.user)})
-    .toPromise().then(response => response)
-    .catch(this.handleError);
-   };
-
-   putProduit(product : Product): Promise<Response> {
-    return this.http.put(this.server + "generic/product",product,{
-      headers: this.setHeaders(this.user)})
-    .toPromise().then(response => response)
-    .catch(this.handleError);
-   };
-
-   public putUpgrade(upgrade: Pallier): Promise<Response> {
-    console.log(upgrade);
+  public putUpgrade(upgrade: Pallier): Promise<Response> {
+   // console.log(upgrade);
     return this.http
-      .put(this.server + "api/upgrade", upgrade, {
+      .put(this.server + "generic/upgrade", upgrade, {
         headers: { "X-user": this.getUser() }
       })
       .toPromise()
@@ -71,5 +81,13 @@ export class RestService {
       .catch(this.handleError);
   }
 
-   
+  public deleteWorld(): Promise<Response> {
+    return this.http
+      .delete(this.server + "generic/world", {
+        headers: this.setHeaders(this.getUser())
+      })
+      .toPromise().then(response => response)
+      .catch(this.handleError);
+  }
+
 }
