@@ -61,7 +61,7 @@ export class RestService {
 
 
   public putProduit(product: Product): Promise<Response> {
-    // console.log(upgrade);
+     //console.log(product);
      return this.http
        .put(this.server + "generic/product", product, {
          headers: { "X-user": this.getUser() }
@@ -81,6 +81,17 @@ export class RestService {
       .then(response => response)
       .catch(this.handleError);
   }
+
+  public saveWorld(world: World): Promise<Response> {
+    // console.log(world);
+     return this.http
+       .put(this.server + "generic/world", world, {
+         headers: { "X-user": this.getUser() }
+       })
+       .toPromise()
+       .then(response => response)
+       .catch(this.handleError);
+   }
 
   public deleteWorld(): Promise<Response> {
     return this.http

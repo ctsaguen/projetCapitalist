@@ -33,6 +33,16 @@ export class AppComponent {
 
   }
 
+  ngOnInit(): void {
+    //sauvegarder le monde 
+    setInterval(() => {
+      this.service.saveWorld(this.world);
+      this.bonusAllunlock()
+      this.disponibiliteManager();
+      this.disponibiliteUpgrades();
+    }, 1000);
+  }
+
   //ici on teste la disponibilité d'un manager pour le signaler visuellement à l'utilisateur d'un changement et c'est utilisé dans lors des nombreuses productions.
   disponibiliteManager(): void {
     this.dispoManager = false;
@@ -89,22 +99,12 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
     this.world.score = this.world.score + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
-    this.world.totalangels = Math.round(this.world.totalangels + (150*Math.sqrt(this.world.score/Math.pow(10,15))));
-    //on teste la disponibilté des manager
-    this.disponibiliteManager();
-    //on teste la disponibilté des upgrade
-    this.disponibiliteUpgrades();
-    //signalisation au serveur de l'achat d'un produit 
-    this.service.putProduit(p);
+    this.world.totalangels = Math.round(this.world.totalangels + (150 * Math.sqrt(this.world.score / Math.pow(10, 15))));
   }
 
   //on valide l'achat d'un produit dans le component Product
   onAchatDone(m: number) {
     this.world.money = this.world.money - m;
-    //on teste si les unlocks généraux sont débloqués
-    this.bonusAllunlock()
-    this.disponibiliteManager();
-    this.disponibiliteUpgrades();
   }
 
   //ici on enregistre les changements de nom d'utilisateur effectué par l'utilisateur
@@ -134,9 +134,6 @@ export class AppComponent {
           this.world.products.product[this.world.products.product.indexOf(element)].managerUnlocked = true;
         }
       });
-      this.disponibiliteManager();
-      this.disponibiliteUpgrades();
-      //signaler au serveur de l'achat d'un manager
       this.service.putManager(m);
 
       this.notifyService.showSuccess("Achat de " + m.name + " effectué", "Manager")
@@ -162,9 +159,6 @@ export class AppComponent {
       }
       //signaler l'achat d'un upgrade au serveur 
       this.service.putUpgrade(p);
-      
-      this.disponibiliteUpgrades();
-      this.disponibiliteManager();
     }
   }
 
@@ -197,8 +191,6 @@ export class AppComponent {
         }
       }
     }
-    this.disponibiliteManager();
-    this.disponibiliteUpgrades();
   }
 
   bonusAllunlock() {
@@ -217,7 +209,7 @@ export class AppComponent {
   }
 
   //recupération des angels gagnés
-  claimAngel():void{
+  claimAngel(): void {
     this.service.deleteWorld();
   }
 
