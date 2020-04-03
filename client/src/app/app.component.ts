@@ -36,7 +36,7 @@ export class AppComponent {
   ngOnInit(): void {
     //sauvegarder le monde 
     setInterval(() => {
-      this.service.saveWorld(this.world);
+     // this.service.saveWorld(this.world);
       this.bonusAllunlock()
       this.disponibiliteManager();
       this.disponibiliteUpgrades();
@@ -99,12 +99,14 @@ export class AppComponent {
   onProductionDone(p: Product) {
     this.world.money = this.world.money + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
     this.world.score = this.world.score + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
+   // this.service.saveWorld(this.world);
     this.world.totalangels = Math.round(this.world.totalangels + (150 * Math.sqrt(this.world.score / Math.pow(10, 15))));
   }
 
   //on valide l'achat d'un produit dans le component Product
-  onAchatDone(m: number) {
-    this.world.money = this.world.money - m;
+  onNotifyPurchase(data) {
+    this.world.money -= data.cout;
+    this.service.putProduit(data.product);
   }
 
   //ici on enregistre les changements de nom d'utilisateur effectué par l'utilisateur
@@ -165,7 +167,7 @@ export class AppComponent {
   //ici on va implémenter le code d'achat d'un bonus d'angels
   achatAngel(p: Pallier) {
     if (this.world.activeangels > p.seuil) {
-      this.world.activeangels = this.world.activeangels - 1;
+      this.world.activeangels -= p.seuil;
       this.world.angelupgrades.pallier[this.world.angelupgrades.pallier.indexOf(p)].unlocked = true;
       if (p.typeratio == "ange") {
         this.world.money = this.world.money * p.ratio + this.world.money;
@@ -190,6 +192,7 @@ export class AppComponent {
 
         }
       }
+      this.service.putAngel(p);
     }
   }
 
@@ -211,6 +214,9 @@ export class AppComponent {
   //recupération des angels gagnés
   claimAngel(): void {
     this.service.deleteWorld();
+    this.service.getWorld().then(world => {
+      this.world = world;
+    });
   }
 
 

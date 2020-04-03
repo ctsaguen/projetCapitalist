@@ -50,17 +50,11 @@
       <button class="button btn btn-info btn-block" (click)="investorsModal.show()">Investors</button>
     </div>
     <div class="col-md-10">
-      <div style="margin-right: 80px; margin-left: 20px;" class="row">
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[0]"
-          class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[1]"
-          class="product col-md-5 offset-md-2 shadow p-3 mb-5 bg-dark rounded">
-        </app-products>
-        <app-products (notifyProduction)="onProductionDone($event)" (notifyMoney)="onAchatDone($event)"
-          [money]="world.money" [qtmulti]="qtmulti" [prod]="world.products.product[2]"
-          class="product col-md-5 shadow p-3 mb-5 bg-dark rounded"></app-products>
+      <div class="row">
+        <div *ngFor="let product of world.products.product" style="margin-right: 80px; margin-left: 20px;" class="col-md-5 shadow p-3 mb-5 bg-dark rounded product">
+          <app-products (notifyProduction)="onProductionDone($event)" (notifyPurchase)="onNotifyPurchase($event)"
+            [money]="world.money" [qtmulti]="qtmulti" [prod]="product"></app-products>
+        </div>
       </div>
     </div>
   </div>

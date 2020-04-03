@@ -82,6 +82,18 @@ export class RestService {
       .catch(this.handleError);
   }
 
+  public putAngel(angel: Pallier): Promise<Response> {
+    // console.log(angel);
+     return this.http
+       .put(this.server + "generic/angelupgrade", angel, {
+         headers: { "X-user": this.getUser() }
+       })
+       .toPromise()
+       .then(response => response)
+       .catch(this.handleError);
+   }
+
+  /*
   public saveWorld(world: World): Promise<Response> {
     // console.log(world);
      return this.http
@@ -92,7 +104,7 @@ export class RestService {
        .then(response => response)
        .catch(this.handleError);
    }
-
+*/
   public deleteWorld(): Promise<Response> {
     return this.http
       .delete(this.server + "generic/world", {

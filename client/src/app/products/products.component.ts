@@ -1,11 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NotificationService } from '../service/notification.service';
 
 import { Product } from '../model/product.model';
-import { Pallier } from '../model/pallier.model'
-
-declare var require;
-var ProgressBar = require('progressbar.js');
+import { Pallier } from '../model/pallier.model';
 
 @Component({
   selector: 'app-products',
@@ -13,14 +10,12 @@ var ProgressBar = require('progressbar.js');
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  @ViewChild('bar') progressBarItem: ElementRef;
   lastupdate: number;
   server: string = 'http://localhost:8080/';
   isRun: boolean;
-  bar: any;
+  progressbarvalue: number = 0;
   maxAchat: number;
-  progress: any;
-  
+
   //cette variable sert à faire évoluer les seuils de bonus
   seuil: number;
   //on récupére le produit du world
@@ -34,8 +29,7 @@ export class ProductsComponent implements OnInit {
 
     if (this.product.managerUnlocked && this.product.timeleft > 0) {
       this.lastupdate = Date.now();
-      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      this.bar.animate(1, { duration: this.progress });
+      this.progressbarvalue = this.product.vitesse;
     }
   }
   //on récupère les gains du joueur 
@@ -58,7 +52,7 @@ export class ProductsComponent implements OnInit {
   //on renvoie à la couche mère le le Product en production 
   @Output() notifyProduction: EventEmitter<Product> = new EventEmitter<Product>();
   //on renvoie à la couche mère le coût total du produit acheté 
-  @Output() notifyMoney: EventEmitter<number> = new EventEmitter<number>();
+  @Output() public notifyPurchase = new EventEmitter();
 
   constructor(private notifyService: NotificationService) { }
 
@@ -70,29 +64,12 @@ export class ProductsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    //ici on a mis un timeout afin d'initialiser la progressbar après la création du DOM sinon cela ne fonctionne pas. le hook se lance trop tôt
-    setTimeout(() => {
-      this.bar = new ProgressBar.Line(this.progressBarItem.nativeElement, {
-        strokeWidth: 4,
-        easing: 'easeInOut',
-        color: '#FFEA82',
-        trailColor: '#eee',
-        trailWidth: 1,
-        svgStyle: { width: '100%', height: '100%' },
-        from: { color: '#FFEA82' },
-        to: { color: '#ED6A5A' },
-        step: (state, bar) => {
-          bar.path.setAttribute('stroke', state.color);
-        }
-      });
-    }, 100)
+
 
   }
   //fonction de production utilisé quand le joueur lance une production
   production() {
-    if (this.product.quantite >= 1) {
-      this.progress = (this.product.vitesse - this.product.timeleft) / this.product.vitesse;
-      this.bar.animate(1, { duration: this.progress });
+    if (this.product.quantite >= 1 && !this.isRun) {
       this.product.timeleft = this.product.vitesse;
       this.lastupdate = Date.now();
       this.isRun = true;
@@ -103,12 +80,14 @@ export class ProductsComponent implements OnInit {
     if (this.isRun) {
       if (this.product.timeleft > 0) {
         this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
+        this.progressbarvalue = this.product.vitesse
+        //this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
       }
       else {
         this.product.timeleft = 0;
         this.lastupdate = 0;
         this.isRun = false;
-        this.bar.set(0);
+        this.progressbarvalue = 0;
       }
       this.notifyProduction.emit(this.product);
     }
@@ -120,28 +99,28 @@ export class ProductsComponent implements OnInit {
   //cette fonction calcul la quantité maximal que que le joueur peut acheter en fonction de son argent
   calcMaxCanBuy(): number {
     let quantiteMax: number = 0;
-    if(this.product.cout*this.product.croissance <= this._money){
-      let calPrelem = (this.product.cout - (this._money*(1-this.product.croissance)))/this.product.cout;
-      let quant = (Math.log(calPrelem))/Math.log(this.product.croissance);
-      quantiteMax = Math.trunc(quant-1);
-      if(isNaN(quantiteMax)){
+    if (this.product.cout * this.product.croissance <= this._money) {
+      let calPrelem = (this.product.cout - (this._money * (1 - this.product.croissance))) / this.product.cout;
+      let quant = (Math.log(calPrelem)) / Math.log(this.product.croissance);
+      quantiteMax = Math.round(quant - 1);
+      if (isNaN(quantiteMax) || quantiteMax < 0) {
         quantiteMax = 0;
       }
-      
+
     }
     return quantiteMax;
+
   }
 
   // cette fonction lance l'achat d'un produit
   achatProduct() {
     //console.log(this.calcMaxCanBuy())
+    var coutAchat = 0;
     if (this._qtmulti <= this.calcMaxCanBuy()) {
-      var coutAchat = 0;
-      for(let i=0;i<this._qtmulti;i++){
-        this.maxAchat = this.maxAchat*this.product.croissance;
-        coutAchat = coutAchat + this.maxAchat;
-      }
-      this.notifyMoney.emit(coutAchat);
+      coutAchat = this.product.cout * this._qtmulti;
+      this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
+      this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
+      this.notifyPurchase.emit({cout: coutAchat, product: this.product });
       this.product.quantite = this.product.quantite + this._qtmulti;
       //bonus d'achat spécifique à chaque produit
       this.product.palliers.pallier.forEach(value => {

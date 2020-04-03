@@ -4,6 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule } from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -30,6 +32,7 @@ import { TimerPipe } from './pipe/timer.pipe';
     FormsModule,
     AppRoutingModule,
     HttpClientModule, 
+    NgbModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
