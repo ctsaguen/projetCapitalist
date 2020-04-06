@@ -12,7 +12,6 @@ import { Pallier } from '../model/pallier.model';
 export class ProductsComponent implements OnInit {
   lastupdate: number;
   server: string = 'http://localhost:8080/';
-  isRun: boolean;
   progressbarvalue: number = 0;
   maxAchat: number;
 
@@ -69,30 +68,37 @@ export class ProductsComponent implements OnInit {
   }
   //fonction de production utilisé quand le joueur lance une production
   production() {
-    if (this.product.quantite >= 1 && !this.isRun) {
-      this.product.timeleft = this.product.vitesse;
-      this.lastupdate = Date.now();
-      this.isRun = true;
-    }
+    this.product.timeleft = this.product.vitesse;
+    this.lastupdate = Date.now();
   }
   //calcul du score du joueur après une production, elle est lancé chaque 100ms par le hook ngOnInit et mis à jour les resultats 
   calcScore() {
-    if (this.isRun) {
-      if (this.product.timeleft > 0) {
-        this.product.timeleft = this.product.timeleft - (Date.now() - this.lastupdate);
-        this.progressbarvalue = this.product.vitesse
-        //this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100;
-      }
-      else {
-        this.product.timeleft = 0;
-        this.lastupdate = 0;
-        this.isRun = false;
-        this.progressbarvalue = 0;
-      }
-      this.notifyProduction.emit(this.product);
-    }
-    if (this.product.managerUnlocked) {
+
+    // si le produit n'est pas en production mais que le manager est débloqué, on le lance
+    if (this.product.timeleft === 0 && this.product.managerUnlocked) {
       this.production();
+    }
+    // on ne fait rien si le produit n'est pas en production
+    else if (this.product.timeleft > 0) {
+      let now = Date.now();
+      let elapseTime = now - this.lastupdate;
+      this.lastupdate = now;
+      // on décrémente le temps du temps écoulé
+      this.product.timeleft = this.product.timeleft - elapseTime;
+
+      // si le temps de production du produit est écoulé...
+      if (this.product.timeleft <= 0) {
+        this.product.timeleft = 0;
+        this.progressbarvalue = 0;
+        // on prévient le composant parent que ce produit a été généré.
+        this.notifyProduction.emit(this.product);
+        // et on relance si jamais le manager est débloqué
+        if (this.product.managerUnlocked) {
+          this.production();
+        }
+      }
+      // on calcule le positionnement de la barre de progression en pourcentage
+      else this.progressbarvalue = ((this.product.vitesse - this.product.timeleft) / this.product.vitesse) * 100
     }
   }
 
@@ -120,7 +126,7 @@ export class ProductsComponent implements OnInit {
       coutAchat = this.product.cout * this._qtmulti;
       this.product.cout = this.product.cout * this.product.croissance ** this._qtmulti;
       this.product.revenu = (this.product.revenu / this.product.quantite) * (this.product.quantite + this._qtmulti);
-      this.notifyPurchase.emit({cout: coutAchat, product: this.product });
+      this.notifyPurchase.emit({ cout: coutAchat, product: this.product });
       this.product.quantite = this.product.quantite + this._qtmulti;
       //bonus d'achat spécifique à chaque produit
       this.product.palliers.pallier.forEach(value => {
