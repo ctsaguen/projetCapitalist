@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row navB  bg-dark">
     <div class="col-md-4">
-      <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
+      <span><img [attr.src]="server+world.logo" class="rounded-circle round" /> </span>
       <!--<img [attr.src]="server+world.logo" />-->
       <span style="margin-left: 10px; color: aliceblue;" class="txt text-uppercase font-weight-bold text-monospace"
         id="worldname"> {{world.name}}
@@ -124,7 +124,7 @@
       <div *ngFor="let angel of world.angelupgrades.pallier">
         <div *ngIf="!angel.unlocked" class="row rounded notif">
           <div class="col-md-4">
-            <span><img src="../assets/paris.jpg" class="rounded-circle round"/> </span>
+            <span><img [attr.src]="server+angel.logo" class="rounded-circle round"/> </span>
           </div>
           <div class="col-md-5">
             <span class="txt2 row text-center font-weight-bold">{{angel.name}}</span>
@@ -151,7 +151,7 @@
       <div *ngFor="let upgrade of world.upgrades.pallier">
         <div *ngIf="!upgrade.unlocked" class="row rounded notif">
           <div class="col-md-4">
-            <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
+            <span><img [attr.src]="server+upgrade.logo" class="rounded-circle round" /> </span>
           </div>
           <div class="col-md-5">
             <span class="txt2 row text-center font-weight-bold">{{upgrade.name}}</span>
@@ -182,7 +182,7 @@
             <div class="card-header cardHead text-uppercase font-weight-bold d-flex justify-content-center">
               {{unlock.typeratio}}</div>
             <div style="padding: 0;" class="card-body d-flex justify-content-center">
-              <span><img src="../assets/paris.jpg" class="imgUnlock" /></span>
+              <span><img [attr.src]="server+unlock.logo" class="imgUnlock" /></span>
             </div>
             <div class="card-footer bg-primary footCard text-white">
               <span class="text-uppercase font-weight-bold row d-flex justify-content-center">{{unlock.name}}</span>
@@ -201,7 +201,7 @@
             <div class="card-header cardHead text-uppercase font-weight-bold d-flex justify-content-center">
               {{unlock.typeratio}}</div>
             <div style="padding: 0;" class="card-body d-flex justify-content-center">
-              <span><img src="../assets/paris.jpg" class="imgUnlock" /></span>
+              <span><img [attr.src]="server+unlock.logo" class="imgUnlock" /></span>
             </div>
             <div class="card-footer bg-primary footCard text-white">
               <span class="text-uppercase font-weight-bold row d-flex justify-content-center">{{unlock.name}}</span>

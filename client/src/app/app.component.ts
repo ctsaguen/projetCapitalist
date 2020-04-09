@@ -19,6 +19,7 @@ export class AppComponent {
   username: string = '';
   qtmulti: number = 1;
   world: World = new World();
+  //l'adresse rest pour récupérer le monde est différent de celui des photos donc la méthode getServer() du service rest ne fonctionne pas pour les photos
   server: string = 'http://localhost:8080/';
   dispoManager: boolean;
   dispoUpgrad: boolean;
