@@ -3,7 +3,6 @@
     <div class="col-md-4">
       <span><img src="../assets/paris.jpg" class="rounded-circle round" /> </span>
       <!--<img [attr.src]="server+world.logo" />-->
-      <!--<span id="worldname"> {{world.name}} </span>-->
       <span style="margin-left: 10px; color: aliceblue;" class="txt text-uppercase font-weight-bold text-monospace"
         id="worldname"> {{world.name}}
       </span>
@@ -98,7 +97,7 @@
       <div *ngFor="let manager of world.managers.pallier">
         <div *ngIf="!manager.unlocked" class="row rounded notif">
           <div class="col-md-4">
-            <span><img src="../assets/paris.jpg" class="rounded-circle round"/> </span>
+            <span><img [attr.src]="server+manager.logo" class="rounded-circle round"/> </span>
           </div>
           <div class="col-md-5">
             <span class="txt2 row text-center font-weight-bold">{{manager.name}}</span>
@@ -220,6 +219,6 @@
     </div>
   </app-modal>
 </div>
-<footer class=" foot bg-dark">
-  <div class="txt text-center">Created by &copy; kevin and Margaux </div>
+<footer class="foot">
+  <div style="padding-left: 10px;" class="txt">Created by &copy; kevin and Margaux </div>
 </footer>

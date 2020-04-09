@@ -19,13 +19,12 @@ export class AppComponent {
   username: string = '';
   qtmulti: number = 1;
   world: World = new World();
-  server: string;
+  server: string = 'http://localhost:8080/';
   dispoManager: boolean;
   dispoUpgrad: boolean;
   dispoAngel: boolean;
 
   constructor(private service: RestService, private notifyService: NotificationService) {
-    this.server = service.getServer();
     this.createUsername();
     service.getWorld().then(world => {
       this.world = world;
@@ -97,10 +96,16 @@ export class AppComponent {
   }
   //Prise en compte des productions effectués dans le component Product
   onProductionDone(p: Product) {
+    if (p.timeleft === 0) {
     this.world.money = this.world.money + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
     this.world.score = this.world.score + p.quantite * p.revenu * (1 + (this.world.activeangels * this.world.angelbonus / 100));
-   // this.service.saveWorld(this.world);
     this.world.totalangels = Math.round(this.world.totalangels + (150 * Math.sqrt(this.world.score / Math.pow(10, 15))));
+    }
+   //on notifie l'achat si le mananger n'est pas encore débloqué
+    if (!p.managerUnlocked) {
+      this.service.putProduit(p);
+    }
+
   }
 
   //on valide l'achat d'un produit dans le component Product

@@ -14,6 +14,7 @@ export class ProductsComponent implements OnInit {
   server: string = 'http://localhost:8080/';
   progressbarvalue: number = 0;
   maxAchat: number;
+  isRun: boolean = false;
 
   //cette variable sert à faire évoluer les seuils de bonus
   seuil: number;
@@ -68,12 +69,15 @@ export class ProductsComponent implements OnInit {
   }
   //fonction de production utilisé quand le joueur lance une production
   production() {
-    this.product.timeleft = this.product.vitesse;
-    this.lastupdate = Date.now();
+    //si la production est en cours, la production ne marche pas
+    if (!this.isRun) {
+      this.isRun = true;
+      this.product.timeleft = this.product.vitesse;
+      this.lastupdate = Date.now();
+    }
   }
   //calcul du score du joueur après une production, elle est lancé chaque 100ms par le hook ngOnInit et mis à jour les resultats 
   calcScore() {
-
     // si le produit n'est pas en production mais que le manager est débloqué, on le lance
     if (this.product.timeleft === 0 && this.product.managerUnlocked) {
       this.production();
@@ -89,6 +93,7 @@ export class ProductsComponent implements OnInit {
       // si le temps de production du produit est écoulé...
       if (this.product.timeleft <= 0) {
         this.product.timeleft = 0;
+        this.isRun = false;
         this.progressbarvalue = 0;
         // on prévient le composant parent que ce produit a été généré.
         this.notifyProduction.emit(this.product);
