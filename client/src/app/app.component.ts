@@ -214,9 +214,7 @@ export class AppComponent {
   //recupération des angels gagnés
   claimAngel(): void {
     this.service.deleteWorld();
-    this.service.getWorld().then(world => {
-      this.world = world;
-    });
+    window.location.reload();
   }
 
 

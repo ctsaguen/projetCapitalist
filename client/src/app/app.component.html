@@ -176,6 +176,26 @@
       <h4 class="modal-title">Unlock !</h4>
     </div>
     <div class="app-modal-body">
+
+      <div class="row" *ngFor="let product of world.products.product" >
+        <div *ngFor="let unlock of product.palliers.pallier" class="cardUnlock card col-md-5">
+          <div *ngIf="!unlock.unlocked">
+            <div class="card-header cardHead text-uppercase font-weight-bold d-flex justify-content-center">
+              {{unlock.typeratio}}</div>
+            <div style="padding: 0;" class="card-body d-flex justify-content-center">
+              <span><img src="../assets/paris.jpg" class="imgUnlock" /></span>
+            </div>
+            <div class="card-footer bg-primary footCard text-white">
+              <span class="text-uppercase font-weight-bold row d-flex justify-content-center">{{unlock.name}}</span>
+              <div class="row">
+                <span class="col d-flex justify-content-start">x{{unlock.ratio}}</span>
+                <span class="col d-flex justify-content-end font-italic text-warning">{{unlock.seuil}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div *ngFor="let unlock of world.allunlocks.pallier" class="cardUnlock card col-md-5">
           <div *ngIf="!unlock.unlocked">
